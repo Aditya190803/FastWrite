@@ -90,6 +90,31 @@ py -m FastWrite code_filename.py --LLM_NAME --Research
 
 # Custom (Allows you to feed a custom prompt of your own):
 py -m FastWrite code_filename.py --LLM_NAME --Custom-Prompt "Enter Custom Prompt here"
+
+# Ollama Mode (Local):
+py -m FastWrite code_filename.py --OLLAMA
+
+# Data Flow Graph:
+py -m FastWrite code_filename.py --LLM_NAME --graph
+
+# Evaluation (Compare with reference):
+py -m FastWrite code_filename.py --LLM_NAME --reference path/to/reference.md
+
+# Project-Level (Outputs individual files and a summary):
+py -m FastWrite project_directory/ --LLM_NAME --output-dir ./docs
+
+# Custom Template:
+py -m FastWrite code_filename.py --LLM_NAME --template my_template.md
+# template.md should contain {{content}} and {{filename}} placeholders.
+
+## Configuration
+FastWrite identifies API keys via environment variables or a `.env` file.
+It searches for `.env` in the current working directory first, falling back to the module's root directory.
+- `GROQ_API_KEY`
+- `GEMINI_API_KEY`
+- `OPENAI_API_KEY`
+- `OPENROUTER_API_KEY`
+- `OLLAMA_URL` (Optional, defaults to http://localhost:11434/api/generate)
 ```
 
 

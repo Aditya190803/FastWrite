@@ -4,3 +4,4 @@ openai
 nltk
 python-dotenv
 rouge_metric
+requests
