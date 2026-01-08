@@ -18,11 +18,12 @@ dependencies = [
     "requests",
     "nltk",
     "python-dotenv",
-    "openai"
+    "openai",
+    "rouge_metric"
 ]
 
 [project.urls]
-Homepage = "https://rishisp.me/FastWrite"
+Homepage = "https://fastwrite-py.vercel.app/"
 Repository = "https://github.com/R-G-KJSIT/FastWrite"
 
 

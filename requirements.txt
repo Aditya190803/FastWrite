@@ -3,3 +3,4 @@ google-genai
 openai
 nltk
 python-dotenv
+rouge_metric

@@ -15,7 +15,7 @@ This module provides functionality to:
   - OpenAI-based models (remote)
   - OpenRouter-based models (remote)
   - Ollama-based models (local)
-- **Evaluate Documentation Quality**: Compute BLEU scores to compare generated documentation against a reference document.
+- **Evaluate Documentation Quality**: Compute BLEU/ROUGE scores to compare generated documentation against a reference document.
 
 
 ## Installation
@@ -27,6 +27,8 @@ This module provides functionality to:
 - [openai](https://pypi.org/project/openai/)
 - [requests](https://pypi.org/project/requests/)
 - [nltk](https://pypi.org/project/nltk/)
+- [python-dotenv](https://pypi.org/project/python-dotenv/)
+- [rouge_metric](https://pypi.org/project/rouge-metric/)
 
 ### Install Dependencies
 ```bash
@@ -71,7 +73,23 @@ print(graphviz_code)
 
 ### Generating Documentation (Express Mode):
 ```
+# Normal Mode:
+py -m FastWrite --LLM_NAME
+
+# With custom code file
 py -m FastWrite code_filename.py --LLM_NAME
+
+# Simplified (Novice Friendly) Mode:
+py -m FastWrite code_filename.py --LLM_NAME --Simplify
+
+# Formal (Precise and to the Point) Mode:
+py -m FastWrite code_filename.py --LLM_NAME --Formal
+
+# Research (In-Depth and Elaborate Documentation):
+py -m FastWrite code_filename.py --LLM_NAME --Research
+
+# Custom (Allows you to feed a custom prompt of your own):
+py -m FastWrite code_filename.py --LLM_NAME --Custom-Prompt "Enter Custom Prompt here"
 ```
 
 
@@ -185,6 +203,18 @@ from FastWrite import calculate_bleu_from_files
 bleu_score_from_files = calculate_bleu_from_files("candidate_doc.txt", "reference_doc.txt", smoothing_method='method1')
 print("BLEU Score from Files:", bleu_score_from_files)
 
+```
+
+
+### Calculating Rouge Score:
+```
+from FastWrite.rouge import calculate_rouge
+
+# Provide a reference documentation string for comparison
+reference_doc = "Your reference documentation text here..."
+
+# Calculate Rouge
+rouge = calculate_rouge(doc_llm_host,reference_doc)
 ```
 
 ### Generating README File:

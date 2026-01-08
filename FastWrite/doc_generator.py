@@ -28,7 +28,7 @@ def generate_documentation_groq(code: str, custom_prompt: str, groq_api_key: str
 
 def generate_documentation_gemini(code: str, custom_prompt: str, gemini_api_key: str = None, model: str = "gemini-3.0-flash") -> str:
     """
-    Generates documentation using a Gemini-based AI model.
+    Generates documentation using a Gemini-based AI model (google-genai).
     If no API key is provided, it will prompt for one and save it to .env.
 
     :param code: The Python source code.
