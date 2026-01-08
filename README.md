@@ -122,7 +122,7 @@ Generate high-quality, developer-friendly documentation for the following Python
 """
 
 gemini_api_key = "your_gemini_api_key"
-gemini_model = "gemini-3.0-flash"  # Replace with your desired model
+gemini_model = "gemini-3-flash-preview"  # Replace with your desired model
 
 doc_gemini = generate_documentation_gemini(code_content, custom_prompt, gemini_api_key, gemini_model)
 print(doc_gemini)

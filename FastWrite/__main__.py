@@ -102,7 +102,7 @@ def main():
         documentation = doc_generator.generate_documentation_groq(code, prompt, model=args.model or "moonshotai/kimi-k2-instruct-0905")
         llm_used = "GROQ"
     elif args.GEMINI:
-        documentation = doc_generator.generate_documentation_gemini(code, prompt, model=args.model or "gemini-3.0-flash")
+        documentation = doc_generator.generate_documentation_gemini(code, prompt, model=args.model or "gemini-3-flash-preview")
         llm_used = "GEMINI"
     elif args.OPENAI:
         documentation = doc_generator.generate_documentation_openai(code, prompt, model=args.model or "gpt-5-mini-2025-08-07")
