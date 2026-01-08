@@ -12,7 +12,7 @@ def generate_data_flow(code: str) -> str:
     edges = []
     node_ids = {'Global': 0}
 
-    def add_node(node_name: str):
+    def add_node(node_name: str) -> None:
         if node_name not in node_ids:
             node_ids[node_name] = len(nodes)
             nodes.append(node_name)

@@ -1,5 +1,6 @@
 import os
 import zipfile
+from typing import List
 
 def extract_zip(zip_file_path: str, extract_to: str) -> None:
     """
@@ -11,7 +12,7 @@ def extract_zip(zip_file_path: str, extract_to: str) -> None:
     with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
         zip_ref.extractall(extract_to)
 
-def list_code_files(directory: str) -> list:
+def list_code_files(directory: str) -> List[str]:
     """
     Lists all code files based on supported extensions within a directory (recursively).
 

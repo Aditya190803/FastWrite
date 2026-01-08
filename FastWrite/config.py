@@ -2,14 +2,15 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Define path to the .env file (saved in the module's root folder)
+# Load environment variables from CWD first, then fallback to module root
+load_dotenv()  # CWD
 ENV_PATH = Path(__file__).parent / '.env'
 load_dotenv(dotenv_path=ENV_PATH)
 
 def get_api_key(key_name: str) -> str:
     """
     Returns the API key from the environment. If the key is not found,
-    prompts the user for input and saves it to the .env file.
+    prompts the user for input and saves it to the .env file in the module folder.
 
     :param key_name: The name of the API key environment variable.
     :return: The API key as a string.

@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 from groq import Groq
 from google import genai
 from openai import OpenAI
@@ -18,13 +19,16 @@ def generate_documentation_groq(code: str, custom_prompt: str, groq_api_key: str
     """
     if groq_api_key is None:
         groq_api_key = get_groq_api_key()
-    groq_client = Groq(api_key=groq_api_key)
-    response = groq_client.chat.completions.create(
-        messages=[{"role": "user", "content": f"{custom_prompt}\n\n{code}"}],
-        model=model
-    )
-    doc_content = response.choices[0].message.content
-    return doc_content
+    try:
+        groq_client = Groq(api_key=groq_api_key)
+        response = groq_client.chat.completions.create(
+            messages=[{"role": "user", "content": f"{custom_prompt}\n\n{code}"}],
+            model=model
+        )
+        doc_content = response.choices[0].message.content
+        return doc_content
+    except Exception as e:
+        return f"Error with GROQ API: {str(e)}"
 
 def generate_documentation_gemini(code: str, custom_prompt: str, gemini_api_key: str = None, model: str = "gemini-3-flash-preview") -> str:
     """
@@ -39,13 +43,16 @@ def generate_documentation_gemini(code: str, custom_prompt: str, gemini_api_key:
     """
     if gemini_api_key is None:
         gemini_api_key = get_gemini_api_key()
-    client = genai.Client(api_key=gemini_api_key)
-    response = client.models.generate_content(model=model, contents=f"{custom_prompt}\n\n{code}")
-    return response.text
+    try:
+        client = genai.Client(api_key=gemini_api_key)
+        response = client.models.generate_content(model=model, contents=f"{custom_prompt}\n\n{code}")
+        return response.text
+    except Exception as e:
+        return f"Error with Gemini API: {str(e)}"
 
 def generate_documentation_openai(code: str, custom_prompt: str, openai_api_key: str = None, model: str = "gpt-5-mini-2025-08-07", max_tokens: int = 1024, temperature: float = 0.7) -> str:
     """
-    Generates documentation using the OpenAI API.
+    Generates documentation using the OpenAI Chat Completion API.
     If no API key is provided, it will prompt for one and save it to .env.
 
     :param code: The Python source code.
@@ -56,39 +63,44 @@ def generate_documentation_openai(code: str, custom_prompt: str, openai_api_key:
     :param temperature: Sampling temperature.
     :return: Generated documentation as a markdown string.
     """
-    if openai_api_key is None:
-        openai_api_key = get_openai_api_key()
+    try:
+        client = OpenAI(api_key=openai_api_key)
 
-    client = OpenAI(api_key=openai_api_key)
-
-    response = client.completions.create(
-        model=model,
-        prompt=f"{custom_prompt}\n\n{code}",
-        max_tokens=max_tokens,
-        temperature=temperature,
-    )
-    doc_content = response.choices[0].text.strip()
-    return doc_content
+        response = client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": f"{custom_prompt}\n\n{code}"}],
+            max_tokens=max_tokens,
+            temperature=temperature,
+        )
+        doc_content = response.choices[0].message.content
+        return doc_content
+    except Exception as e:
+        return f"Error with OpenAI API: {str(e)}"
 
 def generate_documentation_ollama(code: str, custom_prompt: str, model: str = "ollama-llama-70b") -> str:
     """
     Generates documentation using a local Ollama model.
-    Ensure your local Ollama server is running and accessible at the given URL.
+    Ensure your local Ollama server is running.
+    The endpoint URL can be overridden by the OLLAMA_URL environment variable.
 
     :param code: The Python source code.
     :param custom_prompt: A prompt string outlining documentation requirements.
     :param model: The identifier of the local Ollama model to use.
     :return: Generated documentation as a markdown string.
     """
+    ollama_url = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
     payload = {
         "model": model,
-        "prompt": f"{custom_prompt}\n\n{code}"
+        "prompt": f"{custom_prompt}\n\n{code}",
+        "stream": False
     }
-    # Adjust the URL if your Ollama endpoint is different
-    response = requests.post("http://localhost:11434/api/generate", json=payload)
-    response.raise_for_status()
-    result = response.json()
-    return result.get("response", "")
+    try:
+        response = requests.post(ollama_url, json=payload)
+        response.raise_for_status()
+        result = response.json()
+        return result.get("response", "")
+    except requests.exceptions.RequestException as e:
+        return f"Error contacting Ollama: {str(e)}"
 
 
 def generate_documentation_openrouter(code: str, custom_prompt: str, openrouter_api_key: str = None, model: str = "xiaomi/mimo-v2-flash:free", max_tokens: int = 1024, temperature: float = 0.7) -> str:
@@ -127,6 +139,9 @@ def generate_documentation_openrouter(code: str, custom_prompt: str, openrouter_
     }
 
     response = requests.post(url, headers=headers, data=json.dumps(payload))
+    response.raise_for_status()
 
-    doc_content = response.json()
-    return doc_content
+    result = response.json()
+    if 'choices' in result and len(result['choices']) > 0:
+        return result['choices'][0]['message']['content']
+    return f"Error: Unexpected response format from OpenRouter: {result}"
