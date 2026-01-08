@@ -31,16 +31,16 @@ def main():
     prompt = "Generate high-quality, developer-friendly documentation for the following Python code Ensure you include Detailed function-level and file-level documentation and a high level slightly less technical documentation at the start to make it friendly. Do not print full code snippets of existing code, just explain them:"
 
     if args.GROQ:
-        documentation = doc_generator.generate_documentation_groq(code, prompt, model=args.model or "llama-3.3-70b-versatile")
+        documentation = doc_generator.generate_documentation_groq(code, prompt, model=args.model or "moonshotai/kimi-k2-instruct-0905")
         llm_used = "GROQ"
     elif args.GEMINI:
-        documentation = doc_generator.generate_documentation_gemini(code, prompt, model=args.model or "gemini-2.0-flash")
+        documentation = doc_generator.generate_documentation_gemini(code, prompt, model=args.model or "gemini-3.0-flash")
         llm_used = "GEMINI"
     elif args.OPENAI:
-        documentation = doc_generator.generate_documentation_openai(code, prompt, model=args.model or "gpt-3.5-turbo")
+        documentation = doc_generator.generate_documentation_openai(code, prompt, model=args.model or "gpt-5-mini-2025-08-07")
         llm_used = "OPENAI"
     elif args.OPENROUTER:
-        documentation = doc_generator.generate_documentation_openrouter(code, prompt, model=args.model or "openrouter/quasar-alpha")
+        documentation = doc_generator.generate_documentation_openrouter(code, prompt, model=args.model or "xiaomi/mimo-v2-flash:free")
         llm_used = "OPENROUTER"
 
     with open("README.md", "w") as readme_file:

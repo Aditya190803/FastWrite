@@ -3,7 +3,7 @@ Python Module for AI-Assisted Documentation
 
 ## Current Statistics:
 - [![PyPI Downloads](https://static.pepy.tech/badge/fastwrite)](https://pepy.tech/projects/fastwrite)
-- Latest Version: [V 1.1.8](https://pypi.org/project/FastWrite)
+- Latest Version: [V 1.2.0](https://pypi.org/project/FastWrite)
 
 ## Overview
 This module provides functionality to:
@@ -23,14 +23,14 @@ This module provides functionality to:
 ### Requirements
 - Python 3.11
 - [groq](https://pypi.org/project/groq/)
-- [google-generativeai](https://pypi.org/project/google-generativeai/)
+- [google-genai](https://pypi.org/project/google-genai/)
 - [openai](https://pypi.org/project/openai/)
 - [requests](https://pypi.org/project/requests/)
 - [nltk](https://pypi.org/project/nltk/)
 
 ### Install Dependencies
 ```bash
-pip install groq google-generativeai requests nltk python-dotenv openai
+pip install groq google-genai requests nltk python-dotenv openai
 ```
 
 ## Usage
@@ -86,7 +86,7 @@ Generate high-quality, developer-friendly documentation for the following Python
 """
 
 groq_api_key = "your_groq_api_key"
-groq_model = "deepseek-r1-distill-llama-70b"  # Replace with your desired model
+groq_model = "moonshotai/kimi-k2-instruct-0905"  # Replace with your desired model
 
 doc_groq = generate_documentation_groq(code_content, custom_prompt, groq_api_key, groq_model)
 print(doc_groq)
@@ -104,7 +104,7 @@ Generate high-quality, developer-friendly documentation for the following Python
 """
 
 gemini_api_key = "your_gemini_api_key"
-gemini_model = "gemini-2.0-flash"  # Replace with your desired model
+gemini_model = "gemini-3.0-flash"  # Replace with your desired model
 
 doc_gemini = generate_documentation_gemini(code_content, custom_prompt, gemini_api_key, gemini_model)
 print(doc_gemini)
